@@ -11,13 +11,29 @@ import {
 axios.default.timeout = 2500;
 axios.default.baseURL = store.state.requestUrl;
 
-let loadingInstance = null;
+let loadingInstance;
 
 axios.interceptors.request.use(config => {
   console.log("axios.interceptors.request.use");
+
+  let paramsLoadingSta = "loadingSta",
+    reg  = new  RegExp("(^|&)"+ paramsLoadingSta +"=([^&]*)(&|$)"),
+    reqLoadingSta = true;
+  if(config.method.toLowerCase() === "get") {
+    if(!reg.test(config.url)) reqLoadingSta = false;
+  } else if(config.method.toLowerCase() === "post") {
+    console.log(reg, config.data);
+    console.log(reg.test(config.data));
+    if(!reg.test(config.data)) reqLoadingSta = false;
+  }
+
+  // element ui Loading方法
+  console.log("reqLoadingSta = " + reqLoadingSta);
   loadingInstance = Loading.service({
+    fullscreen: true,
+    //text:'加载中...',
     spinner: "el-icon-loading",
-    background: "rgba(0,0,0,0)",
+    background: "rgba(0,0,0,0.5)",
     customClass: "common-spinner"
   });
   return config

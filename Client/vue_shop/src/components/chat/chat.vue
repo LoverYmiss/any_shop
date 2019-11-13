@@ -17,7 +17,7 @@
           <div class="login-form">
             <div class="item">
               <span></span>
-              <input type="number" v-model="login_data.id">
+              <input type="number" v-model="login_data.mobile">
             </div>
             <div class="item">
               <span></span>
@@ -132,13 +132,13 @@
 </template>
 
 <script>
-  import { ajaxPost } from '../../reqConfig/ajax';
+  import { ajaxPost, ajaxGet } from '../../reqConfig/ajax';
   import md5 from "md5";
   export default {
     name: "chat",
     data () {
       return {
-        loginSta: 2,
+        loginSta: 1,
         showChatBox: false,
         chatBoxArr: [
           {
@@ -173,7 +173,7 @@
           }
         ],
         login_data: {
-          id: "2503469",
+          mobile: "10000",
           password: "123456"
         },
         ops: {
@@ -226,8 +226,9 @@
       },
       loginBtn () {
         ajaxPost("/login", {
-          id: this.login_data.id,
-          password: md5(this.login_data.password)
+          mobile: this.login_data.mobile,
+          password: md5(this.login_data.password),
+          loadingSta: false
         })
           .then(res => {
             if(res.code === 200) {
@@ -261,7 +262,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background: url("../../../static/images/bg5.jpg") center center no-repeat;
+    background: url("../../../static/images/bg3.jpg") center center no-repeat;
     background-size: cover;
     font-size: 14px;
 
@@ -275,7 +276,7 @@
       left: 0;
       .head {
         height: 328px * (1 - 0.618);
-        background: #fff url("../../../static/images/login-bg3.jpg") top center no-repeat;
+        background: #fff url("../../../static/images/login-bg1.jpg") top center no-repeat;
         background-size: cover;
       }
 

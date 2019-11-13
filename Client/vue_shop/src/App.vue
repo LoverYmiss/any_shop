@@ -21,4 +21,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+.el-loading-spinner i {
+  font-size: 24px;
+}
 </style>
