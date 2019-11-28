@@ -27,6 +27,8 @@ axios.interceptors.request.use(config => {
     if(!reg.test(config.data)) reqLoadingSta = false;
   }
 
+  config.headers["token"] = window.localStorage.getItem("userToken") || "";
+
   // element ui Loading方法
   console.log("reqLoadingSta = " + reqLoadingSta);
   loadingInstance = Loading.service({

@@ -5,6 +5,9 @@ import Router from 'vue-router'
 const userLogin = resolve => require(['@/components/account/login'], resolve);
 const userChat = resolve => require(['@/components/chat/chat'], resolve);
 
+
+const demo = resolve => require(['@/components/demo/index'], resolve);
+
 Vue.use(Router)
 
 export default new Router({
@@ -17,6 +20,10 @@ export default new Router({
       path: '/userChat',
       name: 'userChat',
       component: userChat
+    },{
+      path: '/demo',
+      name: 'demo',
+      component: demo
     }
   ]
 })
