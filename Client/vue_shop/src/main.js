@@ -17,7 +17,6 @@ Vue.config.productionTip = false
 
 //封装全局签名函数
 Vue.prototype.signGenerate = (obj, key) => {
-  console.log(obj, key);
   let str0 = '';
   for (let i in obj) {
     console.log("i = ", i);

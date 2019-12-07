@@ -8,8 +8,10 @@ import {
   Message
 } from 'element-ui';
 
-axios.default.timeout = 2500;
-axios.default.baseURL = store.state.requestUrl;
+axios.defaults.timeout = 2500;
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = store.state.requestUrl;
+console.log("axios", axios);
 
 let loadingInstance;
 
@@ -17,14 +19,14 @@ axios.interceptors.request.use(config => {
   console.log("axios.interceptors.request.use");
 
   let paramsLoadingSta = "loadingSta",
-    reg  = new  RegExp("(^|&)"+ paramsLoadingSta +"=([^&]*)(&|$)"),
+    reg = new RegExp("(^|&)" + paramsLoadingSta + "=([^&]*)(&|$)"),
     reqLoadingSta = true;
-  if(config.method.toLowerCase() === "get") {
-    if(!reg.test(config.url)) reqLoadingSta = false;
-  } else if(config.method.toLowerCase() === "post") {
+  if (config.method.toLowerCase() === "get") {
+    if (!reg.test(config.url)) reqLoadingSta = false;
+  } else if (config.method.toLowerCase() === "post") {
     console.log(reg, config.data);
     console.log(reg.test(config.data));
-    if(!reg.test(config.data)) reqLoadingSta = false;
+    if (!reg.test(config.data)) reqLoadingSta = false;
   }
 
   config.headers["token"] = window.localStorage.getItem("userToken") || "";
@@ -46,7 +48,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
   console.log("response use");
 
-  if(/(\/login)/.test(response.config.url)) {
+  if (/(\/login)/.test(response.config.url)) {
     window.localStorage.setItem("localUserInfo", JSON.stringify(response.data.data));
   }
 
@@ -54,10 +56,10 @@ axios.interceptors.response.use(response => {
     commonUserInfo = getLocalUserInfo || JSON.parse(getLocalUserInfo);
 
   //判断登录
-  if(commonUserInfo === null) {
+  if (commonUserInfo === null) {
     let urlPath = router.options.routes[0].path;
     //过滤不用登录页面
-    if(urlPath !== "/") {
+    if (urlPath !== "/") {
       MessageBox({
         type: "warning",
         title: "提示",
@@ -67,7 +69,9 @@ axios.interceptors.response.use(response => {
         message: "你未登录帐号，请登录",
         center: true,
         callback: function () {
-          router.push({path:'/account/login'})
+          router.push({
+            path: '/account/login'
+          })
         }
       });
     }
